@@ -1,49 +1,33 @@
-// import React, { useState } from "react";
-
-// //include images into your bundle
-// import rigoImage from "../../img/rigo-baby.jpg";
+import React, { useState, useEffect } from "react";
 
 
-
-// //create your first component
-// const Home = () => {	
-// 	const [ToDoText, setToDoText]=useState("");
-// 	const [ToDoArray, setToDoArray]=useState(["a","b","c"]);
+const Home = () => {	
 
 
-// 	function AddTask(e){		
-// 		setToDoArray([...ToDoArray, ToDoText]);
-// 		e.preventDefault();
-// 		setToDoText("");
-// 	}
-// 	function DeleteTask(task){
-// 		ToDoArray.filter()		
-// 		console.log(task)	
 
-// 	}
-// 	return (
-// 		<div className="text-center">
-// 			<form>
-// 				<div className="container">
-// 					<div className="row">
-// 						<h1>To-Do's</h1>
-// 						<div className="form-group col">						
-// 							<input type="text" onChange={(e)=>setToDoText(e.target.value)} value={ToDoText} className="form-control" id="ToDoInput" placeholder="Enter To-Do" />							
-							
-// 						</div>		
-// 						<button onClick={AddTask}>Add task</button>										
-// 					</div>
-// 					<div id="ToDo-list">
-// 						<p>{ToDoText}</p>
-// 						<p>{ToDoArray}</p>
-// 						<div className="container">
-// 							{ToDoArray.map((task)=><div> {task} <span id={task} key={task} onClick={() => DeleteTask(task)}><i className="fa-solid fa-xmark"></i></span></div> )}
-// 						</div>
-// 					</div>					
-// 				</div>
-// 			</form>
-// 		</div>
-// 	);	
-// };
+function traerLista(){	
+	fetch('https://assets.breatheco.de/apis/fake/todos/user/afbeltranv')
+	.then(res => res.json())
+	.then(response => { console.log(response) })
+}
+// traerLista();
+function postearLista(){
+		fetch('https://assets.breatheco.de/apis/fake/todos/user/afbeltranv',{
+			method: 'PUT',
+			headers: { 'Content-Type': 'application/json' },
+			body: JSON.stringify({ label: 'React PUT Request Example', done: false })
+		})
+	
+	
+}
+postearLista();
+return(
+	<h1>Fetch  y Put API</h1>
+)
 
-// export default Home;
+	
+
+}
+
+
+export default Home;
