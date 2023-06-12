@@ -1,8 +1,27 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 
 const ToDo=()=>{
     const[ToDoTask, setToDoTask]=useState("")
     const[ToDoTaskList, setToDoTaskList]=useState([])
+
+    function traerLista(){	
+        fetch('https://assets.breatheco.de/apis/fake/todos/user/afbeltranv')
+        .then(res => res.json())
+        .then(response => { setToDoTaskList(response) })
+    }
+    function actualizarLista(list){
+        
+        setToDoTaskList(list)
+            fetch('https://assets.breatheco.de/apis/fake/todos/user/afbeltranv',{
+                method: "PUT",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify(list)
+
+            })	
+    }
+useEffect(()=>{
+    traerLista()
+})
 
 return(
     <>
@@ -14,8 +33,8 @@ return(
                 onChange={(e)=>setToDoTask(e.target.value)} 
                 value={ToDoTask} 
                 placeholder="Type your task"
-                onKeyDown={(e)=> {if(e.key==="Enter" && ToDoTask!=""){
-                    setToDoTaskList(ToDoTaskList.concat(ToDoTask));
+                onKeyDown={(e)=> {if(e.key==="Enter" && ToDoTask!=""){                    
+                    actualizarLista(ToDoTaskList.concat({label:ToDoTask, done:false}));
                     setToDoTask("");                    
                 }}} >
             </input>                
@@ -23,8 +42,8 @@ return(
         </li>
         {ToDoTaskList.map((task, index)=>
                     (<li key={index}>
-                        {task}{" "} <span onClick={() => 
-                            setToDoTaskList(
+                        {task.label}{" "} <span onClick={() => 
+                            actualizarLista(
                                 ToDoTaskList.filter(
                                     (t, currentIndex)=>
                                     index!=currentIndex))} > <i className="fa-solid fa-trash" ></i></span>
